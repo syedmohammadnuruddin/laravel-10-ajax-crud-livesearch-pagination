@@ -25,6 +25,7 @@
             <div class="col-md-8">
                 <h2 class="my-5 text-center">Lar 10 Ajax crud</h2>
                 <a href="" class="btn btn-success my-3" data-bs-toggle="modal" data-bs-target="#addModal">Add Product</a>
+                <input type="text" name="search" id="search" class="form-control mb-3" placeholder="Search Here....">
                 <div class="table-data">
                     <table class="table table-bordered">
                         <thead>
