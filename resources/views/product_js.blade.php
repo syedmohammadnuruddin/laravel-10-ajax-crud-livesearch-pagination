@@ -3,6 +3,7 @@
 
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
 
+    <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
     <script>
         $.ajaxSetup({
     headers: {
@@ -26,6 +27,24 @@
                             $('#addModal').modal('hide');
                             $('#addProductForm')[0].reset();
                             $('.table').load(location.href+' .table');
+                            Command: toastr["success"]("Product Added!")
+                            toastr.options = {
+                            "closeButton": true,
+                            "debug": false,
+                            "newestOnTop": false,
+                            "progressBar": true,
+                            "positionClass": "toast-top-right",
+                            "preventDuplicates": false,
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "5000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                            }
                         }
                     },error:function(err){
                         let error = err.responseJSON;
@@ -61,6 +80,24 @@
                             $('#updateModal').modal('hide');
                             $('#updateProductForm')[0].reset();
                             $('.table').load(location.href+' .table');
+                            Command: toastr["success"]("Product Updated!")
+                            toastr.options = {
+                            "closeButton": true,
+                            "debug": false,
+                            "newestOnTop": false,
+                            "progressBar": true,
+                            "positionClass": "toast-top-right",
+                            "preventDuplicates": false,
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "5000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                            }
                         }
                     },error:function(err){
                         let error = err.responseJSON;
@@ -70,5 +107,55 @@
                     }
                 });
             });
+            //delete product data
+            $(document).on('click','.delete_product',function(e){
+                e.preventDefault();
+                let product_id = $(this).data('id');
+                if(confirm('Are you sure to delete product??')){
+                    $.ajax({
+                        url:"{{route('delete.product')}}",
+                        method:'post',
+                        data:{product_id:product_id},
+                        success:function(res) {
+                            if(res.status=='success'){
+                                $('.table').load(location.href+' .table');
+                                Command: toastr["success"]("Product Deleted!")
+                                toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": true,
+                                "positionClass": "toast-top-right",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                                }
+                            }
+                        }
+                    });
+                }         
+            });
+            //pagination
+            $(document).on('click','.pagination a', function(e){
+                e.preventDefault();
+                let page = $(this).attr('href').split('page=')[1]
+                product(page)
+            })
+
+            function product(page){
+                $.ajax({
+                    url:"/pagination/paginate-data?page="+page,
+                    success:function(res){
+                        $('.table-data').html(res);
+                    }
+                })
+            }
         });
     </script>
